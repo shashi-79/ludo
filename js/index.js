@@ -1,3 +1,5 @@
+const url= "https://shashi-79.github.io/ludo"
+
 //variables
 var player = 0;
 var player_ui = new Array(4);
