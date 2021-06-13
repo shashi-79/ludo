@@ -30,7 +30,7 @@ div {
 }
 .main{
   background-size: cover;
-  background-image: url(/board.png);
+  background-image: url('https://shashi-79.github.io/ludo/board.png');
   height: 350px;
   width: 350px;
 
