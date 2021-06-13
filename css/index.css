@@ -1,34 +1,57 @@
 div {
   display: grid;
-  grid-gap: 1px;
-//  background-color: #897603;
 }
+
+.place{
+  z-index: 9;
+}
+.tablet{
+
+  position: absolute;
+  height: 20px;
+  width: 20px;
+
+}
+#restart{
+  height:  50px;
+  width: 80px;
+  text-align: center;
+  background-color: #ff00ff;
+}
+
 
 #players{
   display: grid;
   height: 80px;
+  grid-gap: 2%;
   grid-template-columns: 25% 25% 25% 25%;
-  background-color: #907f95;
+  font-size: 70px;
+  text-align: center;
 }
 .main{
-  height: 500px;
+  background-size: cover;
+  background-image: url(/board.png);
+  height: 350px;
   width: 350px;
-  color: #777777;
-//  background-color: #ff00ff;
-  grid-template-columns: 39.6% 6.6% 6.6% 6.6% 39.6%;
-  grid-template-rows: 39.6% 6.6% 6.6% 6.6% 39.6%;
+
+  grid-template-columns: 39.3% 6.6% 6.6% 6.6% 39.4%;
+  grid-template-rows: 39.3% 6.6% 6.6% 6.6% 39.3%;
+  grid-gap: 0.5%;
   
 }
 
 .house{
-  //display: grid;
-  
+  z-index: 9;
+
   grid-template-columns: auto auto;
   grid-template-rows: auto auto;
-  
-  grid-gap: 5px;
+
 }
 
 .columns{
   grid-template-columns: auto auto auto auto auto auto;
+}
+
+body{
+  overflow: hidden;
 }
