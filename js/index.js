@@ -5,22 +5,35 @@ player_color = ["red", "purple", "yellow", "pink", "silver"];
 
 var room = new matrixArray(4, 4);
 var ui_update;
-var yy = false;
+
+var tablet_elem = new matrixArray(4, 4);
+var tablet_design = "<svg height='16' width='16'><circle cx='8' cy='6' r='8' fill='rgb(55,200,40)' /> <polygon points='0,9 8,24 16,9 ' style='fill:rgb(55,200,40);' /></svg>";
+var dice = true;
+
 //end variables
 
 
-function onload() {
-  setTimeout(restart, 0);
-
-}
 
 function ui_set() {
   // body...
 
   for (var i = 0; i < 25; i++) {
     element[i] = document.createElement("DIV");
-    //  element[i].innerHTML=i;
     document.getElementById("main").appendChild(element[i]);
+  }
+
+  for (var i = 0; i < 4; i++) {
+    for (var j = 0; j < 4; j++) {
+      tablet_elem[i][j] = document.createElement("DIV");
+
+      tablet_elem[i][j].classList.add("tablet");
+      tablet_elem[i][j].value = [i,
+        j];
+      tablet_elem[i][j].innerHTML = tablet_design;
+      tablet_elem[i][j].style.setProperty('height', '16px');
+      tablet_elem[i][j].style.setProperty('width', '16px');
+      document.getElementById("main").appendChild(tablet_elem[i][j]);
+    }
   }
 
   var row_column = [5,
@@ -37,13 +50,13 @@ function ui_set() {
     23];
   for (var i = 0; i < 12; i++) {
     if (i < 6) {
-      element[row_column[i]].classList.add("columns")
+      element[row_column[i]].classList.add("columns");
     }
     for (var j = 0; j < 6; j++) {
       place[i*6+j] = document.createElement("DIV");
-      //  place[i*6+j].innerHTML = i*6+j;
       element[row_column[i]].appendChild(place[i*6+j]);
-      addlistener_path(place[i*6+j]);
+      place[i*6+j].addEventListener("click", tablet_listener);
+      place[i*6+j].classList.add("place");
     }
   }
 
@@ -56,7 +69,7 @@ function ui_set() {
     for (var j = 0; j < 4; j++) {
       room[i][j] = document.createElement("DIV");
       element[house[i]].appendChild(room[i][j]);
-      addlistener_room(room[i][j]);
+      room[i][j].addEventListener("click", tablet_listener);
     }
   }
 
@@ -65,191 +78,146 @@ function ui_set() {
     document.getElementById("players").append(player_ui[i]);
     addlistener_player(player_ui[i]);
   }
+  setTimeout(function() {
+    update();
 
+  }, 0);
+}
+
+function tablet_listener() {
+  for (var i = 0; i < 4; i++) {
+    for (var j = 0; j < 4; j++) {
+      if (this == el(i, j)) {
+        if (!dice && i == player) {
+          if (tablet[i][j] == 0 && player_ui[player].innerHTML == 6) {
+            tablet[i][j] = 1;
+            update();
+            dice = true;
+
+          } else if (tablet[i][j] > 0) {
+
+            dice = true;
+            tablet_forwarding(player, j);
+            player = (player+1)%4;
+          }
+        }
+        break;
+      }
+    }
+  }
 }
 
 function addlistener_player(object) {
   // body...
   object.addEventListener("click", function() {
-    if (this == player_ui[player]&&!yy) {
+    if (this == player_ui[player] && dice) {
       player_ui[player].innerHTML = parseInt(((Math.random(0, 6)*1000)%6)+1);
-      
-      for (var l = 0; l < 4; l++) {
-          //checking the all 4 tablet of player , tablet no. is in "l"
-                if((tablet[player][l]==0&&player_ui[player].innerHTML==6)||(tablet[player][l] > 0&&(tablet[player][l]+parseInt(player_ui[player].innerHTML)<58))){
-                    
-                    yy=true;
-                    break;
-                    
-                  }
-                }
-      if(!yy){
-          player = (player+1)%4;
+
+      for (var i = 0; i < 4; i++) {
+        //checking the all 4 tablet of player , tablet no. is in "i"
+        if ((tablet[player][i] == 0 && player_ui[player].innerHTML == 6) || (tablet[player][i] > 0 && (tablet[player][i]+parseInt(player_ui[player].innerHTML) < 58))) {
+          update();
+
+          dice = false;
+          break;
+        }
+      }
+      if (dice) {
+        player = (player+1)%4;
+        update();
       }
     }
   });
 
 }
 
-function addlistener_path(object) {
-  // body...
-  object.addEventListener("click",
-    function() {
+function tablet_forwarding(player__, tablet__) {
+  for (var j = 0; j < player_ui[player].innerHTML; j++) {
 
-      if (yy) {
+    setTimeout(function() {
+      tablet[player__][tablet__]++;
+      update();
+    }, 200*j, tablet__, player__);
 
-        for (var i = 0; i < 4; i++) {
-          //checking the all 4 tablet of player , tablet no. is in "i"
-          
-          if (tablet[player][i] > 0 && tablet[player][i] < 52) {
-
-            if (place[path[((player_path[player]+tablet[player][i])-1)%52]] == this) {
-
-              tablet_forwarding(i);
-              break;
-            };
-          } else if (tablet[player][i] > 51 && tablet[player][i] < 57) {
-
-            if ((place[path_[player]+(tablet[player][i]-52)] == this) || (place[path_[player]-(tablet[player][i]-52)] == this)) {
-
-//              console.log(player_ui[player].innerHTML+tablet[player][i]);
-
-              if (parseInt(player_ui[player].innerHTML)+tablet[player][i] < 58) {
-                tablet_forwarding(i);
-                break;
-              }
-
-            }
-          }
-        }
-      }
-    });
+  }
+  setTimeout(cut_tablet, parseInt(player_ui[player].innerHTML)*200, player__, tablet__);
 }
 
-function tablet_forwarding(i) {
-                for (var j = 0; j < player_ui[player].innerHTML; j++) {
-
-                  setTimeout(function() {
-                    tablet[player__][i]++;
-                  }, 200*j, i, player__ = player);
-
-                }
-                setTimeout(cut_tablet,parseInt(player_ui[player].innerHTML)*200,player___=player,k=i);
-                
-                
-                player = (player+1)%4;
-                yy = false;
-}
-
-
-
-function cut_tablet(player___,k) {
+function cut_tablet(player___, tablet__) {
   for (var i = 0; i < 4; i++) {
-    if (i!=player___) {
+    if (i != player___) {
       for (var j = 0; j < 4; j++) {
-        if (tablet[i][j]>0&&tablet[i][j]<51) {
-          if(path[((player_path[i]+tablet[i][j])-1)%52]==path[((player_path[player___]+tablet[player___][k])-1)%52]){
-            
-          if((path[((player_path[i]+tablet[i][j])-1)%52])!=(1||9||26||34||38||49||58||69)){
-          
-            console.log(i+"   "+j);
-            tablet[i][j]=0;
-            
-            
+        if (tablet[i][j] > 0 && tablet[i][j] < 51) {
+          if (path[((player_path[i]+tablet[i][j])-1)%52] == path[((player_path[player___]+tablet[player___][tablet__])-1)%52]) {
+
+            if ((path[((player_path[i]+tablet[i][j])-1)%52]) != (1 || 9 || 26 || 34 || 38 || 49 || 58 || 69)) {
+              tablet[i][j] = 0;
+              update();
+            }
+
           }
-            
-          }
-          
+
         }
       }
     }
   }
-  
+
 }
 
 function restart() {
   // body...
   for (var i = 0; i < 4; i++) {
-    element[win[i]].style.backgroundColor = "orange";
     for (var j = 0; j < 4; j++) {
       tablet[i][j] = 0;
     }
   }
-  ui_update = setInterval(update, 200);
+  update();
 }
 
-function stop() {
+function update() {
   // body...
-  clearInterval(ui_update);
+  for (var i = 0; i < 4; i++) {
+    player_ui[i].style.backgroundColor = "red";
+  }
+  player_ui[player].style.backgroundColor = "blue";
+
+
+  for (var i = 0; i < 4; i++) {
+    for (var j = 0; j < 4; j++) {
+      tablet_elem[i][j].style.top = (((el(i, j).getBoundingClientRect().top+el(i, j).getBoundingClientRect().bottom)/2))-(tablet_elem[i][j].getBoundingClientRect().height/2) +"px";
+
+
+      tablet_elem[i][j].style.left = (((el(i, j).getBoundingClientRect().left+el(i, j).getBoundingClientRect().right)/2))-(tablet_elem[i][j].getBoundingClientRect().width/2) +"px";
+
+
+
+    }
+  }
 }
 
-
-
-
+function el(i, j) {
+  if (tablet[i][j] == 0) {
+    return room[i][j];
+  } else if (tablet[i][j] < 52) {
+    return  place[path[((tablet[i][j]+player_path[i]-1)%52)]];
+  } else if (tablet[i][j] == 57) {
+    return element[win[i]];
+  } else if (tablet[i][j] > 51 && tablet[i][j] < 57) {
+    if (i < 2) {
+      return  place[(path_[i]+(tablet[i][j]-52))];
+    } else {
+      return place[(path_[i]-(tablet[i][j]-52))];
+    }
+  }
+}
 function matrixArray(x, y) {
   // body...
   var out = new Array(x);
   for (var i = 0; i < x; i++) {
     out[i] = new Array(y);
+    for (var j = 0; j < out[i].length; j++) {
+      out[i][j] = 0;
+    }
   }
   return out;
-}
-function addlistener_room (object) {
-  // body...
-  object.addEventListener("click",
-    function() {
-      for (var i = 0; i < 4; i++) {
-        if ((tablet[player][i] == 0)  &&(room[player][i] == this)) {
-          
-              if (player_ui[player].innerHTML == 6&& yy) {
-
-                tablet[player][i] = 1;
-                yy = false;
-              }
-            
-            break;
-          }
-        
-      }
-    });
-}
-function update() {
-  // body...
-  for (var i = 0; i < place.length; i++) {
-    place[i].style.backgroundColor = "green";
-  }
-
-
-  for (var i = 0; i < 4; i++) {
-    if (i == player) {
-
-      player_ui[i].style.backgroundColor = player_color[i];
-    } else {
-      player_ui[i].style.backgroundColor = "";
-
-    }
-
-
-    for (var j = 0; j < 4; j++) {
-      if (tablet[i][j] == 0) {
-        room[i][j].style.backgroundColor = player_color[i];
-      } else {
-        room[i][j].style.backgroundColor = "green";
-
-      }
-      if ((tablet[i][j] < 52) && (tablet[i][j] != 0)) {
-        place[path[((tablet[i][j]+player_path[i]-1)%52)]].style.backgroundColor = player_color[i];
-      } else if (tablet[i][j] == 57) {
-        element[win[i]].style.backgroundColor = player_color[i];
-      } else if (tablet[i][j] < 57 && tablet[i][j] > 51) {
-        if (i < 2) {
-          place[(path_[i]  +(tablet[i][j]-52))].style.backgroundColor = player_color[i];
-        } else {
-          place[(path_[i]  -(tablet[i][j]-52))].style.backgroundColor = player_color[i];
-        }
-
-      }
-
-    }
-  }
 }
