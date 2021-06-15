@@ -1,5 +1,3 @@
-const url= "https://shashi-79.github.io/ludo"
-
 //variables
 var player = 0;
 var player_ui = new Array(4);
@@ -9,12 +7,15 @@ var room = new matrixArray(4, 4);
 var ui_update;
 
 var tablet_elem = new matrixArray(4, 4);
-var tablet_design = "<svg height='16' width='16'><circle cx='8' cy='6' r='8' fill='rgb(55,200,40)' /> <polygon points='0,9 8,24 16,9 ' style='fill:rgb(55,200,40);' /></svg>";
 var dice = true;
 
+var tablet_design = ["<svg height='16' width='16'><circle cx='8' cy='6' r='8' fill='","' /> <polygon points='0,9 8,24 16,9 ' style='fill:",";' /></svg>"];
 //end variables
-
-
+function u() {
+  // body...
+  var pp="red";
+document.body.innerHTML=tablet_design[0]+"red"+tablet_design[1]+"red"+tablet_design[2];
+}
 
 function ui_set() {
   // body...
@@ -31,7 +32,7 @@ function ui_set() {
       tablet_elem[i][j].classList.add("tablet");
       tablet_elem[i][j].value = [i,
         j];
-      tablet_elem[i][j].innerHTML = tablet_design;
+      tablet_elem[i][j].innerHTML = "<svg height='16' width='16'><circle cx='8' cy='6' r='8' fill='"+player_color[i]+"' /> <polygon points='0,9 8,24 16,9 ' style='fill:"+player_color[i]+";' /></svg>";
       tablet_elem[i][j].style.setProperty('height', '16px');
       tablet_elem[i][j].style.setProperty('width', '16px');
       document.getElementById("main").appendChild(tablet_elem[i][j]);
@@ -179,9 +180,9 @@ function restart() {
 function update() {
   // body...
   for (var i = 0; i < 4; i++) {
-    player_ui[i].style.backgroundColor = "red";
+    player_ui[i].style.backgroundColor = "";
   }
-  player_ui[player].style.backgroundColor = "blue";
+  player_ui[player].style.backgroundColor = player_color[player];
 
 
   for (var i = 0; i < 4; i++) {
