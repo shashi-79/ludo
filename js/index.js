@@ -79,6 +79,8 @@ function ui_set() {
 
   for (var i = 0; i < 4; i++) {
     player_ui[i] = document.createElement("DIV");
+    player_ui[player].innerHTML ='&#9858';
+    ////////////////////////////
     document.getElementById("players").append(player_ui[i]);
     addlistener_player(player_ui[i]);
   }
@@ -117,6 +119,8 @@ function addlistener_player(object) {
     if (this == player_ui[player] && dice) {
   /**/    player_outcome[player]= parseInt(((Math.random(0, 6)*1000)%6)+1);
 
+         player_ui[player].innerHTML ='&#'+ (9855+player_outcome[player])
+
       for (var i = 0; i < 4; i++) {
         //checking the all 4 tablet of player , tablet no. is in "i"
   /**/      if ((tablet[player][i] == 0 && player_outcome[player] == 6) || (tablet[player][i] > 0 && (tablet[player][i]+parseInt(player_outcome[player]) < 58))) {
@@ -136,7 +140,7 @@ function addlistener_player(object) {
 }
 
 function tablet_forwarding(player__, tablet__) {
-  for (var j = 0; j < player_ui[player].innerHTML; j++) {
+  for (var j = 0; j < player_outcome[player]; j++) {
 
     setTimeout(function() {
       tablet[player__][tablet__]++;
@@ -144,7 +148,7 @@ function tablet_forwarding(player__, tablet__) {
     }, 200*j, tablet__, player__);
 
   }
-  setTimeout(cut_tablet, parseInt(player_ui[player].innerHTML)*200, player__, tablet__);
+  setTimeout(cut_tablet, parseInt(player_outcome[player])*200, player__, tablet__);
 }
 
 function cut_tablet(player___, tablet__) {
