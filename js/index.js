@@ -183,13 +183,13 @@ function restart() {
 }
 
 function update() {
-  // body...
+ /* // body...
   for (var i = 0; i < 4; i++) {
     player_ui[i].style.backgroundColor = "";
   }
   player_ui[player].style.backgroundColor = player_color[player];
 
-
+*/
   for (var i = 0; i < 4; i++) {
     for (var j = 0; j < 4; j++) {
       tablet_elem[i][j].style.top = (((el(i, j).getBoundingClientRect().top+el(i, j).getBoundingClientRect().bottom)/2))-(tablet_elem[i][j].getBoundingClientRect().height/2) +"px";
