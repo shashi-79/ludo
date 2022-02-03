@@ -1,7 +1,7 @@
 //variables
 var player = 0;
 var player_ui = new Array(4);
-var player_outcome = new Array(4);
+var player_outcome = [1,1,1,1];
 player_color = ["red", "purple", "yellow", "pink", "silver"];
 
 var room = new matrixArray(4, 4);
