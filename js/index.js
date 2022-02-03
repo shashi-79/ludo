@@ -1,6 +1,7 @@
 //variables
 var player = 0;
 var player_ui = new Array(4);
+var player_outcome = new Array(4);
 player_color = ["red", "purple", "yellow", "pink", "silver"];
 
 var room = new matrixArray(4, 4);
@@ -92,7 +93,7 @@ function tablet_listener() {
     for (var j = 0; j < 4; j++) {
       if (this == el(i, j)) {
         if (!dice && i == player) {
-          if (tablet[i][j] == 0 && player_ui[player].innerHTML == 6) {
+  /**/        if (tablet[i][j] == 0 && player_outcome[player] == 6) {
             tablet[i][j] = 1;
             update();
             dice = true;
@@ -114,11 +115,11 @@ function addlistener_player(object) {
   // body...
   object.addEventListener("click", function() {
     if (this == player_ui[player] && dice) {
-      player_ui[player].innerHTML = parseInt(((Math.random(0, 6)*1000)%6)+1);
+  /**/    player_outcome[player]= parseInt(((Math.random(0, 6)*1000)%6)+1);
 
       for (var i = 0; i < 4; i++) {
         //checking the all 4 tablet of player , tablet no. is in "i"
-        if ((tablet[player][i] == 0 && player_ui[player].innerHTML == 6) || (tablet[player][i] > 0 && (tablet[player][i]+parseInt(player_ui[player].innerHTML) < 58))) {
+  /**/      if ((tablet[player][i] == 0 && player_outcome[player] == 6) || (tablet[player][i] > 0 && (tablet[player][i]+parseInt(player_outcome[player]) < 58))) {
           update();
 
           dice = false;
