@@ -1,4 +1,5 @@
 //variables
+/* error at   --***-- */
 var player = 0;
 var player_ui = new Array(4);
 var player_outcome = [1,1,1,1];
@@ -123,12 +124,14 @@ function addlistener_player(object) {
 
       for (var i = 0; i < 4; i++) {
         //checking the all 4 tablet of player , tablet no. is in "i"
-  /**/      if ((tablet[player][i] == 0 && player_outcome[player] == 6) || (tablet[player][i] > 0 && (tablet[player][i]+parseInt(player_outcome[player]) < 58))) {
+  /**/      if ((tablet[player][i] == 0 && player_outcome[player] == 6) || (tablet[player][i] > 0 && (tablet[player][i]+player_outcome[player] < 58))) {
+   
           update();
 
           dice = false;
           break;
         }
+        
       }
       if (dice) {
         player = (player+1)%4;
@@ -195,7 +198,7 @@ function update() {
 
   for (var i = 0; i < 4; i++) {
     for (var j = 0; j < 4; j++) {
- /* error 
+ /* --***-- error 
  after 
  outcome check at last  to go in win home 
  --error-- more out come 
