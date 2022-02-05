@@ -195,7 +195,11 @@ function update() {
 
   for (var i = 0; i < 4; i++) {
     for (var j = 0; j < 4; j++) {
-      tablet_elem[i][j].style.top = (((el(i, j).getBoundingClientRect().top+el(i, j).getBoundingClientRect().bottom)/2))-(tablet_elem[i][j].getBoundingClientRect().height/2) +"px";
+ /* error 
+ after 
+ outcome check at last  to go in win home 
+ --error-- more out come 
+ */     tablet_elem[i][j].style.top = (((el(i, j).getBoundingClientRect().top+el(i, j).getBoundingClientRect().bottom)/2))-(tablet_elem[i][j].getBoundingClientRect().height/2) +"px";
 
 
       tablet_elem[i][j].style.left = (((el(i, j).getBoundingClientRect().left+el(i, j).getBoundingClientRect().right)/2))-(tablet_elem[i][j].getBoundingClientRect().width/2) +"px";
